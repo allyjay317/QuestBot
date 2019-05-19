@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.discord4j:discord4j-rest:3.0.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.discord4j/discord4j-rest/3.0.2/cdf0697305dedb5744c378f89a2b9e9db2a56732/discord4j-rest-3.0.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.discord4j/discord4j-rest/3.0.2/87dc66f7fc1758590ebb6445c5193e6bd825eedb/discord4j-rest-3.0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
