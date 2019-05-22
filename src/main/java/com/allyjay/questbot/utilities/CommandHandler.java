@@ -2,17 +2,16 @@ package com.allyjay.questbot.utilities;
 
 import com.allyjay.questbot.QuestBot;
 import com.allyjay.questbot.music.SoundBoard;
+import com.allyjay.questbot.music.SoundBoardClass;
 import com.allyjay.questbot.music.VoiceManager;
 import com.allyjay.questbot.pathfinder.PathfinderUtils;
 import discord4j.core.DiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.VoiceState;
 import discord4j.core.object.entity.*;
+import discord4j.core.object.util.Permission;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CommandHandler {
 
@@ -82,8 +81,32 @@ public class CommandHandler {
         commands.put("sb", event ->{
             VoiceChannel channel = getVoiceChannel(event);
             List<String> command = messageToList(event.getMessage());
-            String song = SoundBoard.getMusicLink(command.get(0));
+            /*String song = SoundBoard.getMusicLink(command.get(0));*/
+            String song = SoundBoardClass.getLink(command.get(0));
             VoiceManager.loadItem(channel, song);
+        });
+        commands.put("sbhelp", event -> {
+            Set<String> commands = SoundBoardClass.getCommands();
+            String commandList = "Availabile Soundboard Commands:\n";
+            for(String s : commands){
+                commandList = commandList + s + "\n";
+            }
+            event.getMember().orElse(null).getPrivateChannel().block().createMessage(commandList).block();
+        });
+        commands.put("addsb", event ->{
+           Member m = event.getMember().orElse(null);
+           MessageChannel channel = event.getMessage().getChannel().block();
+           if(m.getBasePermissions().block().contains(Permission.ADMINISTRATOR)){
+               List<String> command = messageToList(event.getMessage());
+
+               if(SoundBoardClass.addCell(channel, command.get(0), command.get(1))){
+                   event.getMessage().getChannel().block().createMessage("Added " + command.get(0) + " successfully").block();
+               }
+
+           }
+           else{
+               event.getMessage().getChannel().block().createMessage("You don't own me, what do you think you're doing?").block();
+           }
         });
 
     }
