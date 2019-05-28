@@ -1,7 +1,6 @@
 package com.allyjay.questbot.utilities;
 
 import com.allyjay.questbot.QuestBot;
-import com.allyjay.questbot.music.SoundBoard;
 import com.allyjay.questbot.music.SoundBoardClass;
 import com.allyjay.questbot.music.VoiceManager;
 import com.allyjay.questbot.pathfinder.PathfinderUtils;
@@ -17,7 +16,7 @@ public class CommandHandler {
 
     private static final Map<String, Command> commands = new HashMap<>();
     private static final Map<String, Command> pCommands = new HashMap<>();
-    private static User self;
+
 
 
     public static void startListening(DiscordClient d){
@@ -26,6 +25,8 @@ public class CommandHandler {
 
         d.getEventDispatcher().on(MessageCreateEvent.class)
                 .subscribe(event -> {
+                    if(event.getMember().orElse(null).isBot())
+                        return;
                     final String content = event.getMessage().getContent().orElse("");
                     for(final Map.Entry<String, Command> entry : commands.entrySet()){
                         if(content.startsWith('!' + entry.getKey())) {
@@ -34,7 +35,6 @@ public class CommandHandler {
                         }
                     }
                 });
-        self = d.getSelf().block();
 
 
 
@@ -87,7 +87,7 @@ public class CommandHandler {
         });
         commands.put("sbhelp", event -> {
             Set<String> commands = SoundBoardClass.getCommands();
-            String commandList = "Availabile Soundboard Commands:\n";
+            String commandList = "Available Soundboard Commands:\n";
             for(String s : commands){
                 commandList = commandList + s + "\n";
             }
@@ -121,6 +121,26 @@ public class CommandHandler {
            String say = m.getContent().orElse(null);
            m.delete().block();
            m.getChannel().block().createMessage(say.substring(5)).block();
+        });
+        commands.put("roll", event ->{
+            Random r = new Random(System.currentTimeMillis());
+            Message message = event.getMessage();
+           List<String> list = messageToList(message);
+           String [] command = list.get(0).split("d");
+           int num = 0;
+           int sides = 0;
+           try {
+                num = Integer.parseInt(command[0]);
+                sides = Integer.parseInt(command[1]);
+           }catch (NumberFormatException e){
+               message.getChannel().block().createMessage("Sorry, didn't recognize the die roll you asked me for").block();
+               return;
+           }
+           int total = 0;
+           for(int i=0;i<num; i++){
+               total += r.nextInt(sides)+1;
+           }
+           message.getChannel().block().createMessage(event.getMember().orElse(null).getNicknameMention() + " rolled a " + total).block();
         });
     }
     //Pathfinder Commands

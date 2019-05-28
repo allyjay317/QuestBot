@@ -1,7 +1,9 @@
 package com.allyjay.questbot.music;
 
+import com.allyjay.questbot.QuestBot;
 import discord4j.core.object.entity.MessageChannel;
 
+import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import java.util.Set;
 
 public class SoundBoardClass {
     private static final Map<String, String> soundboard = new HashMap<>();
+    private static URL database;
     public static boolean addCell(MessageChannel channel, String command, String link){
         if(soundboard.containsKey(command)) {
             channel.createMessage("Command: " + command + " already exists");
@@ -70,8 +73,10 @@ public class SoundBoardClass {
 
     }
     private static Connection connect() throws SQLException{
+        //if(database == null)
+            //database = QuestBot.class.getResource("/resources/soundboard.db");
         Connection c;
-        c = DriverManager.getConnection("jdbc:sqlite:D:/soundboard.db");
+        c = DriverManager.getConnection("jdbc:sqlite:soundboard.db");
         c.setAutoCommit(false);
         return c;
     }

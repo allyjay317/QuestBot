@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="com.allyjay.questbot.QuestBot.main" target="1.8" />
       <module name="com.allyjay.questbot.QuestBot.test" target="1.8" />
+      <module name="QuestBot.main" target="1.8" />
+      <module name="QuestBot.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -15,6 +15,7 @@ public class QuestBot {
     private static DiscordClient client;
 
     public static void main(String [] args){
+
         //PokemonBattle.loadPokemon();
         SoundBoardClass.loadBoard();
         client = new DiscordClientBuilder(args[0]).build();
